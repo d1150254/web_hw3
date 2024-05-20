@@ -36,7 +36,7 @@ app.get('/api/getalldata', (req,res)=>{
     });
 });
 
-app.get('/api/test', (req,res)=>{
+app.get('/api/getdata', (req,res)=>{
     if(req.query.year && req.query.month){
         const month=req.query.month;
         const year=req.query.year;
