@@ -1,0 +1,147 @@
+<html>
+
+<head>
+  <title>衛生紙查價</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>衛生紙價格查詢</h1>
+  <p>輸入年份和月份來查詢2023/5/20~2024/3/15的每次的衛生紙價格變化</p>
+
+  <div class="container">
+    <button id="refreshButton">Refresh Data</button>
+  </div>
+
+  <div class="container">
+    <input type="number" id="yearInput" placeholder="Year" min="2000" max="2100">
+    <input type="number" id="monthInput" placeholder="Month" min="1" max="12">
+    <button id="filterButton">Filter Data</button>
+  </div>
+
+  <table id="table">
+    <thead>
+      <tr>
+        <th>date</th>
+        <th>price</th>
+        <th>pricediff</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    async function fetchDataAndPopulateTable() {
+      try {
+        const response = await fetch('http://localhost:3000/api/getalldata');
+        const data = await response.json();
+
+        const tableBody = document.querySelector('#table tbody');
+        tableBody.innerHTML='';
+        let i=0,temp=0;
+
+        data.forEach(item => {
+          const row = document.createElement('tr');
+
+          const yearCell = document.createElement('td');
+          yearCell.textContent = item.years+'/'+item.month+'/'+item.day;
+          row.appendChild(yearCell);
+
+          const priceCell = document.createElement('td');
+          priceCell.textContent = item.price;
+          row.appendChild(priceCell);
+
+          tableBody.appendChild(row);
+
+          const pricediff=document.createElement('td');
+          if(i!==0){
+            pricediff.textContent=item.price-temp;
+          }
+          else{
+            pricediff.textContent=temp;
+          }
+
+          if(i===0){
+            pricediff.style.color='black';
+          }
+          else if(item.price-temp>0){
+            pricediff.style.color='red';
+          }
+          else{
+            pricediff.style.color='green';
+          }
+
+          row.appendChild(pricediff);
+          i=i+1;
+          temp=item.price;
+
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    async function getselectdata(year,month) {
+      try{
+        const response = await fetch('http://localhost:3000/api/test?year='+year+'&month='+month);
+        const data = await response.json();
+
+        const tableBody = document.querySelector('#table tbody');
+        tableBody.innerHTML='';
+        let i=0,temp=0;
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          
+          const yearCell = document.createElement('td');
+          yearCell.textContent = item.years + '/' + item.month + '/' + item.day;
+          row.appendChild(yearCell);
+
+          const priceCell = document.createElement('td');
+          priceCell.textContent = item.price;
+          row.appendChild(priceCell);
+
+          const pricediff=document.createElement('td');
+          if(i!==0){
+            pricediff.textContent=item.price-temp;
+          }
+          else{
+            pricediff.textContent=temp;
+          }
+
+          if(i===0){
+            pricediff.style.color='black';
+          }
+          else if(item.price-temp>0){
+            pricediff.style.color='red';
+          }
+          else{
+            pricediff.style.color='green';
+          }
+
+          row.appendChild(pricediff);
+          i=i+1;
+          temp=item.price;
+
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    document.getElementById('filterButton').addEventListener('click',()=>{
+      const year=document.getElementById('yearInput').value;
+      const month=document.getElementById('monthInput').value;
+      getselectdata(year,month);
+    });
+
+    document.getElementById('refreshButton').addEventListener('click',fetchDataAndPopulateTable);
+
+    fetchDataAndPopulateTable();
+  </script>
+
+</body>
+
+</html>
