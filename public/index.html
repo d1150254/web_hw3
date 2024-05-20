@@ -31,117 +31,117 @@
     </tbody>
   </table>
 
-  <script>
-    async function fetchDataAndPopulateTable() {
-      try {
-        const response = await fetch('http://localhost:3000/api/getalldata');
-        const data = await response.json();
-
-        const tableBody = document.querySelector('#table tbody');
-        tableBody.innerHTML='';
-        let i=0,temp=0;
-
-        data.forEach(item => {
-          const row = document.createElement('tr');
-
-          const yearCell = document.createElement('td');
-          yearCell.textContent = item.years+'/'+item.month+'/'+item.day;
-          row.appendChild(yearCell);
-
-          const priceCell = document.createElement('td');
-          priceCell.textContent = item.price;
-          row.appendChild(priceCell);
-
-          tableBody.appendChild(row);
-
-          const pricediff=document.createElement('td');
-          if(i!==0){
-            pricediff.textContent=item.price-temp;
-          }
-          else{
-            pricediff.textContent=temp;
-          }
-
-          if(i===0){
-            pricediff.style.color='black';
-          }
-          else if(item.price-temp>0){
-            pricediff.style.color='red';
-          }
-          else{
-            pricediff.style.color='green';
-          }
-
-          row.appendChild(pricediff);
-          i=i+1;
-          temp=item.price;
-
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-
-    async function getselectdata(year,month) {
-      try{
-        const response = await fetch('http://localhost:3000/api/test?year='+year+'&month='+month);
-        const data = await response.json();
-
-        const tableBody = document.querySelector('#table tbody');
-        tableBody.innerHTML='';
-        let i=0,temp=0;
-        data.forEach(item => {
-          const row = document.createElement('tr');
-          
-          const yearCell = document.createElement('td');
-          yearCell.textContent = item.years + '/' + item.month + '/' + item.day;
-          row.appendChild(yearCell);
-
-          const priceCell = document.createElement('td');
-          priceCell.textContent = item.price;
-          row.appendChild(priceCell);
-
-          const pricediff=document.createElement('td');
-          if(i!==0){
-            pricediff.textContent=item.price-temp;
-          }
-          else{
-            pricediff.textContent=temp;
-          }
-
-          if(i===0){
-            pricediff.style.color='black';
-          }
-          else if(item.price-temp>0){
-            pricediff.style.color='red';
-          }
-          else{
-            pricediff.style.color='green';
-          }
-
-          row.appendChild(pricediff);
-          i=i+1;
-          temp=item.price;
-
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-
-    document.getElementById('filterButton').addEventListener('click',()=>{
-      const year=document.getElementById('yearInput').value;
-      const month=document.getElementById('monthInput').value;
-      getselectdata(year,month);
-    });
-
-    document.getElementById('refreshButton').addEventListener('click',fetchDataAndPopulateTable);
-
-    fetchDataAndPopulateTable();
-  </script>
-
 </body>
+
+<script>
+  async function fetchDataAndPopulateTable() {
+    try {
+      const response = await fetch('http://localhost:3000/api/getalldata');
+      const data = await response.json();
+
+      const tableBody = document.querySelector('#table tbody');
+      tableBody.innerHTML='';
+      let i=0,temp=0;
+
+      data.forEach(item => {
+        const row = document.createElement('tr');
+
+        const yearCell = document.createElement('td');
+        yearCell.textContent = item.years+'/'+item.month+'/'+item.day;
+        row.appendChild(yearCell);
+
+        const priceCell = document.createElement('td');
+        priceCell.textContent = item.price;
+        row.appendChild(priceCell);
+
+        tableBody.appendChild(row);
+
+        const pricediff=document.createElement('td');
+        if(i!==0){
+          pricediff.textContent=item.price-temp;
+        }
+        else{
+          pricediff.textContent=temp;
+        }
+
+        if(i===0){
+          pricediff.style.color='black';
+        }
+        else if(item.price-temp>0){
+          pricediff.style.color='red';
+        }
+        else{
+          pricediff.style.color='green';
+        }
+
+        row.appendChild(pricediff);
+        i=i+1;
+        temp=item.price;
+
+        tableBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  async function getselectdata(year,month) {
+    try{
+      const response = await fetch('http://localhost:3000/api/getdata?year='+year+'&month='+month);
+      const data = await response.json();
+
+      const tableBody = document.querySelector('#table tbody');
+      tableBody.innerHTML='';
+      let i=0,temp=0;
+      data.forEach(item => {
+        const row = document.createElement('tr');
+
+        const yearCell = document.createElement('td');
+        yearCell.textContent = item.years + '/' + item.month + '/' + item.day;
+        row.appendChild(yearCell);
+
+        const priceCell = document.createElement('td');
+        priceCell.textContent = item.price;
+        row.appendChild(priceCell);
+
+        const pricediff=document.createElement('td');
+        if(i!==0){
+          pricediff.textContent=item.price-temp;
+        }
+        else{
+          pricediff.textContent=temp;
+        }
+
+        if(i===0){
+          pricediff.style.color='black';
+        }
+        else if(item.price-temp>0){
+          pricediff.style.color='red';
+        }
+        else{
+          pricediff.style.color='green';
+        }
+
+        row.appendChild(pricediff);
+        i=i+1;
+        temp=item.price;
+
+        tableBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  document.getElementById('filterButton').addEventListener('click',()=>{
+    const year=document.getElementById('yearInput').value;
+    const month=document.getElementById('monthInput').value;
+    getselectdata(year,month);
+  });
+
+  document.getElementById('refreshButton').addEventListener('click',fetchDataAndPopulateTable);
+
+  fetchDataAndPopulateTable();
+</script>
 
 </html>
